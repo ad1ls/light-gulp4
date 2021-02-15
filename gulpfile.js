@@ -1,14 +1,14 @@
-const { src, dest, parallel, series, watch} = require('gulp');
-const { notify, stream } = require('browser-sync');
-const browserSync        = require('browser-sync').create();
-const scss               = require('gulp-sass');
-const imagemin           = require('gulp-imagemin');
-const autoprefixer       = require('gulp-autoprefixer');
-const concat             = require('gulp-concat');
-const uglify             = require('gulp-uglify-es').default;
-const cleancss           = require('gulp-clean-css');
-const newer              = require('gulp-newer');
-const babel              = require('gulp-babel');
+const { src, dest, parallel, series, watch} = require('gulp')
+const { notify, stream } = require('browser-sync')
+const browserSync        = require('browser-sync').create()
+const scss               = require('gulp-sass')
+const imagemin           = require('gulp-imagemin')
+const autoprefixer       = require('gulp-autoprefixer')
+const concat             = require('gulp-concat')
+const uglify             = require('gulp-uglify-es').default
+const cleancss           = require('gulp-clean-css')
+const newer              = require('gulp-newer')
+const babel              = require('gulp-babel')
 
 
 function browsersync() {
@@ -51,7 +51,11 @@ function html() {
 function images() {
     return src('app/img/**/*')
     .pipe(newer('dist/img'))
-    .pipe(imagemin())
+    .pipe(imagemin([
+            imagemin.gifsicle({interlaced: true}),
+            imagemin.mozjpeg({quality: 75, progressive: true}),
+            imagemin.optipng({optimizationLevel: 5})
+        ]))
     .pipe(dest('dist/img/'))
     .pipe(browserSync.stream())
 }
