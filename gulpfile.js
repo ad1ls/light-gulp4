@@ -64,7 +64,7 @@ function images() {
 function startwatch() {
     watch('app/scss/*.scss', styles)
     watch(['app/**/*.js','!app/**/*.min.js'], scripts)
-    watch('app/img/*.png|svg|jpeg', images)
+    watch('app/img/*.+(png|svg|jpg|gif)', images)
     watch('app/**/*.html', html).on('change', browserSync.reload)
 }
 
