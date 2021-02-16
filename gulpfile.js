@@ -52,32 +52,30 @@ let paths = {
 
 function browsersync() {
     browserSync.init({
-        server: { baseDir: 'dist/'},
+        server: { baseDir: destDir + '/'},
         notify: false,
         online: true
     })
 }
 
 function scripts () {
-    return src([
-        'app/js/app.js'
-    ])
+    return src(paths.scripts.src)
     .pipe(babel({
         presets: ['@babel/env']
     }))
-    .pipe(concat('app.min.js'))
+    .pipe(concat(paths.jsOutputName))
     .pipe(uglify())
-    .pipe(dest('dist/js/'))
+    .pipe(dest(paths.scripts.dest))
     .pipe(browserSync.stream())
 }
 
 function styles() {
-    return src('app/scss/app.scss') 
+    return src(paths.styles.src) 
     .pipe(scss())
-    .pipe(concat('app.min.css'))
+    .pipe(concat(paths.cssOutputName))
     .pipe(autoprefixer({ overrideBrowserslist: ['last 5 versions'], grid: true }))
     .pipe(cleancss(( { level: {1: { specialComments:0 } } } )))
-    .pipe(dest('dist/css'))
+    .pipe(dest(paths.styles.dest))
     .pipe(browserSync.stream())
 }
 
