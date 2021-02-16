@@ -80,29 +80,44 @@ function styles() {
 }
 
 function html() {
-    return src('app/**.html') 
-    .pipe(dest('dist/'))
+    return src(paths.html.src) 
+    .pipe(dest(paths.html.dest))
     .pipe(browserSync.stream())
 }
 
 function images() {
-    return src('app/img/**/*')
-    .pipe(newer('dist/img'))
+    return src(paths.images.src)
+    .pipe(newer(paths.images.dest))
     .pipe(imagemin([
             imagemin.gifsicle({interlaced: true}),
             imagemin.mozjpeg({quality: 75, progressive: true}),
             imagemin.optipng({optimizationLevel: 5})
         ]))
-    .pipe(dest('dist/img/'))
+    .pipe(dest(paths.images.dest))
     .pipe(browserSync.stream())
 }
 
+// function deploy() {
+// 	return src(destDir + '/')
+// 	.pipe(rsync({
+// 		root: destDir + '/',
+// 		hostname: paths.deploy.hostname,
+// 		destination: paths.deploy.destination,
+// 		include: paths.deploy.include,
+// 		exclude: paths.deploy.exclude,
+// 		recursive: true,
+// 		archive: true,
+// 		silent: false,
+// 		compress: true
+// 	}))
+// }
+
 
 function startwatch() {
-    watch('app/scss/*.scss', styles)
-    watch(['app/**/*.js','!app/**/*.min.js'], scripts)
-    watch('app/img/*.+(png|svg|jpg|gif)', images)
-    watch('app/**/*.html', html).on('change', browserSync.reload)
+	watch([baseDir + '/js/**/*.js', '!' + paths.scripts.dest + '/*.min.js'], {usePolling: true}, scripts)
+	watch(baseDir  + '/' + preprocessor + '/**/*', {usePolling: true}, styles)
+	watch(baseDir  + '/img/*.{' + imageswatch + '}', {usePolling: true}, images)
+	watch(baseDir  + '/**/*.{' + fileswatch + '}', {usePolling: true}).on('change', browserSync.reload)
 }
 
 exports.browsersync = browsersync;
