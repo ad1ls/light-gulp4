@@ -10,6 +10,45 @@ const cleancss           = require('gulp-clean-css')
 const newer              = require('gulp-newer')
 const babel              = require('gulp-babel')
 
+const baseDir        = 'app',
+      destDir        = 'dist';
+      preprocessor   = 'scss',
+      fileswatch     = 'html,htm,txt,json,md,woff2', 
+      imageswatch    = 'jpg,jpeg,png,webp,svg';
+
+let paths = {
+	scripts: {
+		src: [
+			baseDir + '/js/app.js'
+		],
+		dest: destDir + '/js',
+	},
+
+	styles: {
+		src:   baseDir + '/' + preprocessor + '/app.*',
+		dest:  destDir + '/css',
+	},
+
+    html: {
+        src: 'app/**.html',
+        dest: destDir
+    },
+
+	images: {
+		src:  baseDir + '/img/**/*',
+		dest: destDir + '/img',
+	},
+
+    deploy: {
+		hostname:    'username@yousite.com', // Deploy hostname
+		destination: 'yousite/public_html/', // Deploy destination
+		include:     [/* '*.htaccess' */], // Included files to deploy
+		exclude:     [ '**/Thumbs.db', '**/*.DS_Store' ], // Excluded files from deploy
+	},
+
+	cssOutputName: 'app.min.css',
+	jsOutputName:  'app.min.js',
+}
 
 function browsersync() {
     browserSync.init({
