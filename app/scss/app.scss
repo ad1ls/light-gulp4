@@ -1,1 +1,27 @@
+@import 'variables';
+@import 'mixins';
 @import 'config';
+
+html {
+    box-sizing: border-box;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+body {
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,212,255,1) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    font-size: 50px;
+    font-family: Consolas, sans-serif;
+}
+h1 {
+    color: ivory;
+    letter-spacing: 20px;
+}

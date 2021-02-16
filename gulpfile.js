@@ -1,5 +1,4 @@
 const { src, dest, parallel, series, watch} = require('gulp')
-const { notify, stream } = require('browser-sync')
 const browserSync        = require('browser-sync').create()
 const scss               = require('gulp-sass')
 const imagemin           = require('gulp-imagemin')
@@ -9,6 +8,7 @@ const uglify             = require('gulp-uglify-es').default
 const cleancss           = require('gulp-clean-css')
 const newer              = require('gulp-newer')
 const babel              = require('gulp-babel')
+
 
 const baseDir        = 'app',
       destDir        = 'dist';
@@ -120,9 +120,11 @@ function startwatch() {
 	watch(baseDir  + '/**/*.{' + fileswatch + '}', {usePolling: true}).on('change', browserSync.reload)
 }
 
-exports.browsersync = browsersync;
-exports.scripts     = scripts;
-exports.html        = html;
-exports.styles      = styles;
-exports.images      = images;
-exports.default     = parallel(scripts, styles, images, browsersync, html, startwatch);
+exports.browsersync = browsersync
+//exports.assets      = series(cleanimg, styles, scripts, images);
+exports.scripts     = scripts
+exports.html        = html
+exports.styles      = styles
+exports.images      = images
+// exports.deploy      = deploy;
+exports.default     = parallel(scripts, styles, images, browsersync, html, startwatch)
