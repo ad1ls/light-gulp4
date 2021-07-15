@@ -39,13 +39,6 @@ let paths = {
 		dest: destDir + '/img',
 	},
 
-    deploy: {
-		hostname:    'username@yousite.com', // Deploy hostname
-		destination: 'yousite/public_html/', // Deploy destination
-		include:     [/* '*.htaccess' */], // Included files to deploy
-		exclude:     [ '**/Thumbs.db', '**/*.DS_Store' ], // Excluded files from deploy
-	},
-
 	cssOutputName: 'app.min.css',
 	jsOutputName:  'app.min.js',
 }
@@ -97,34 +90,17 @@ function images() {
     .pipe(browserSync.stream())
 }
 
-// function deploy() {
-// 	return src(destDir + '/')
-// 	.pipe(rsync({
-// 		root: destDir + '/',
-// 		hostname: paths.deploy.hostname,
-// 		destination: paths.deploy.destination,
-// 		include: paths.deploy.include,
-// 		exclude: paths.deploy.exclude,
-// 		recursive: true,
-// 		archive: true,
-// 		silent: false,
-// 		compress: true
-// 	}))
-// }
-
 
 function startwatch() {
 	watch([baseDir + '/js/**/*.js', '!' + paths.scripts.dest + '/*.min.js'], {usePolling: true}, scripts)
 	watch(baseDir  + '/' + preprocessor + '/**/*', {usePolling: true}, styles)
 	watch(baseDir  + '/img/*.{' + imageswatch + '}', {usePolling: true}, images)
-	watch(baseDir  + '/**/*.{' + fileswatch + '}', {usePolling: true}).on('change', browserSync.reload)
+	watch(baseDir  + '/**/*.{' + fileswatch + '}', {usePolling: true}, html).on('change', browserSync.reload)
 }
 
 exports.browsersync = browsersync
-//exports.assets      = series(cleanimg, styles, scripts, images);
 exports.scripts     = scripts
 exports.html        = html
 exports.styles      = styles
 exports.images      = images
-// exports.deploy      = deploy;
 exports.default     = parallel(scripts, styles, images, browsersync, html, startwatch)
